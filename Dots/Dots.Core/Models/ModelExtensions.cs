@@ -18,13 +18,12 @@ namespace Dots.Core.Models
 {
     public static class ModelExtensions
     {
-        //private static readonly IFileStoreService FileStoreService = Mvx.Resolve<IFileStoreService>();
 
         private static IFileStoreService FileStoreService
         {
             get
             {
-                if (Mvx.CanResolve(typeof (IFileStoreService)))
+                if (Mvx.CanResolve(typeof(IFileStoreService)))
                 {
                     return Mvx.Resolve<IFileStoreService>();
                 }
@@ -61,14 +60,14 @@ namespace Dots.Core.Models
             where T : BusinessBaseModel<T>, INotifyPropertyChanged, new()
         {
             var trace = Mvx.Resolve<IMvxTrace>();
-            string storeFileName = FilePath(typeof (T), item.Id);
+            string storeFileName = FilePath(typeof(T), item.Id);
             if (string.IsNullOrEmpty(storeFileName))
                 return;
             try
             {
                 FileStoreService.WriteFile(storeFileName, stream =>
                 {
-                    var serializer = new XmlSerializer(typeof (T));
+                    var serializer = new XmlSerializer(typeof(T));
                     serializer.Serialize(stream, item);
                 });
             }
@@ -82,7 +81,7 @@ namespace Dots.Core.Models
             where T : BusinessBaseModel<T>, new()
         {
             var trace = Mvx.Resolve<IMvxTrace>();
-            string storeFileName = FilePath(typeof (T), id);
+            string storeFileName = FilePath(typeof(T), id);
             if (string.IsNullOrEmpty(storeFileName))
                 return null;
             try
@@ -93,7 +92,7 @@ namespace Dots.Core.Models
 
                 using (XmlReader reader = loadedData.Root.CreateReader())
                 {
-                    var result = (T) new XmlSerializer(typeof (T)).Deserialize(reader);
+                    var result = (T)new XmlSerializer(typeof(T)).Deserialize(reader);
                     result.MarkOld();
                     return result;
                 }
@@ -111,7 +110,7 @@ namespace Dots.Core.Models
         {
             var trace = Mvx.Resolve<IMvxTrace>();
             var result = new List<C>();
-            string filePath = FilePath(typeof (C));
+            string filePath = FilePath(typeof(C));
 
             if (string.IsNullOrEmpty(filePath))
                 return null;
@@ -125,7 +124,7 @@ namespace Dots.Core.Models
                     {
                         using (XmlReader reader = loadedData.Root.CreateReader())
                         {
-                            var loadedItem = new XmlSerializer(typeof (C)).Deserialize(reader) as C;
+                            var loadedItem = new XmlSerializer(typeof(C)).Deserialize(reader) as C;
                             if (loadedItem == null) continue;
                             loadedItem.MarkOld();
                             result.Add(loadedItem);
@@ -145,7 +144,7 @@ namespace Dots.Core.Models
         public static void DeleteFile<T>(this T item) where T : BusinessBaseModel<T>, INotifyPropertyChanged, new()
         {
             var trace = Mvx.Resolve<IMvxTrace>();
-            string storeFileName = FilePath(typeof (T), item.Id);
+            string storeFileName = FilePath(typeof(T), item.Id);
             if (string.IsNullOrEmpty(storeFileName))
                 return;
             try

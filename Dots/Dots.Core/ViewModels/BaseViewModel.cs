@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using Cirrious.CrossCore;
+using Cirrious.MvvmCross.Plugins.WebBrowser;
 using Cirrious.MvvmCross.ViewModels;
 using Dots.Core.Services.Analytics;
 
